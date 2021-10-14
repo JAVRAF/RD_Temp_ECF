@@ -1,0 +1,59 @@
+security:
+    # https://symfony.com/doc/current/security/authenticator_manager.html
+    enable_authenticator_manager: true
+    # https://symfony.com/doc/current/security.html#c-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\Store:
+            algorithm: auto
+        App\Entity\Admin:
+            algorithm: auto
+        App\Entity\Tech:
+            algorithm: auto
+
+
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        chain_provider:
+            chain:
+                providers: [app_admin_provider, app_tech_provider, app_store_provider]
+        app_admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: username
+        app_tech_provider:
+            entity:
+                class: App\Entity\Tech
+                property: username
+        app_store_provider:
+            entity:
+                class: App\Entity\Store
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: chain_provider
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+         - { path: ^/store, roles: ROLE_ADMIN }
+         - { path: ^/chamber, roles: ROLE_ADMIN }
+         - { path: ^/tech/, roles: ROLE_ADMIN }
+#         - { path: /techedit/, roles: ROLE_TECH }

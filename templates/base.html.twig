@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}RD Temp{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gemunu+Libre&display=swap" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
+    {% endblock %}
+</head>
+<body>
+<header>
+    {% block header %}
+        <nav>
+            <ul class="nav">
+                <li class="nav"><a href={{ path('app_home_index') }}>Home</a></li>
+                {% if app.user %}
+
+                {% endif %}
+                <li class="nav" style="float: right">{% if app.user %}<a href="{{ path('app_logout') }}">
+                        Logout</a> {% else %} <a href="{{ path('app_login') }}">Login</a> {% endif %}</li>
+            </ul>
+        </nav>
+    {% endblock %}
+</header>
+<main>{% block body %}{% endblock %}</main>
+<footer>{% block footer %}{% endblock %}</footer>
+</body>
+</html>

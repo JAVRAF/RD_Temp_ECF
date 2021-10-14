@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>Cooling chambers :</h1>
+        {% if chambersCount > 0 %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% for chamber in chambers %}
+                    <tr>
+                        <td>{{ chamber.name }}</td>
+                        <td>
+                            <button class="tablebutton"
+                                    onclick="window.location.href = '{{ path('app_coolingchamber_edit', {'id': chamber.id}) }}'">
+                                Edit
+                            </button>
+                        </td>
+                        <td>
+                            <button class="tablebutton"
+                                    onclick="window.location.href = '{{ path('app_coolingchamber_delete', {'id': chamber.id}) }}'">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>There is no cooling chamber</h2>
+        {% endif %}
+        <button onclick="window.location.href = '{{ path('app_coolingchamber_add') }}'">Add a new cooling chamber
+        </button>
+    </div>
+{% endblock %}

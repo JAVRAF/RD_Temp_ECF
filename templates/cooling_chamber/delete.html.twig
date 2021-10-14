@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>The cooling chamber {{ chamber.name }} has been deleted! ✅</h1>
+        <button onclick="window.location.href = '{{ path('app_coolingchamber_list') }}'">Back to cooling chamber list</button>
+    </div>
+{% endblock %}

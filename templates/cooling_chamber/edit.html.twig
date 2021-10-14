@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="example-wrapper">
+        {% if isedited == false %}
+            <h1>Edit {{ chamber.name }}</h1>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input class="button" type="submit" value="edit chamber"/>
+            {{ form_end(form) }}
+            <button onclick="window.location.href = '{{ path('app_coolingchamber_list') }}'">Back to cooling chamber list</button>
+        {% else %}
+            <h1>The tech {{ chamber.name }} has been edited! ✅</h1>
+            <button onclick="window.location.href = '{{ path('app_coolingchamber_list') }}'">Back to cooling chamber list</button>
+        {% endif %}
+    </div>
+{% endblock %}

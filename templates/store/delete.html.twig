@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>The store {{ store.username }} has been deleted! ✅</h1>
+        <button onclick="window.location.href = '{{ path('app_store_list') }}'">Back to store list</button>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        {% if isAdded == false %}
+            <h1>Add a new store:</h1>
+            <p>Username: automatically generated !</p>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input class="button" type="submit" value="Submit"/>
+            {{ form_end(form) }}
+        {% else %}
+            <h1>The store {{ store.username }} has been created ! ✅</h1>
+            <button onclick="window.location.href = '{{ path('app_store_add') }}'">Add a new store</button>
+            <button onclick="window.location.href = '{{ path('app_store_list') }}'">Back to store list</button>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>Stores :</h1>
+        {% if StoresCount > 0 %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% for store in stores %}
+                    <tr>
+                        <td>{{ store.username }}</td>
+                        <td>
+                            <button class="tablebutton" onclick="window.location.href = '{{ path('app_store_edit', {'id': store.id}) }}'">Edit</button>
+                        </td>
+                        <td>
+                            <button class="tablebutton" onclick="window.location.href = '{{ path('app_store_delete', {'id': store.id}) }}'">Delete</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>There is no stores</h2>
+        {% endif %}
+        <button onclick="window.location.href = '{{ path('app_store_add') }}'">Add a new store</button>
+    </div>
+{% endblock %}
