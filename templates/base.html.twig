@@ -16,16 +16,29 @@
         <nav>
             <ul class="nav">
                 <li class="nav"><a href={{ path('app_home_index') }}>Home</a></li>
-                {% if app.user %}
-
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav"><a href={{ path('app_store_list') }}>Store</a></li>
+                    <li class="nav"><a href={{ path('app_tech_list') }}>Tech</a></li>
+                    <li class="nav"><a href={{ path('app_coolingchamber_list') }}>Chamber</a></li>
+                {% elseif is_granted('ROLE_TECH') %}
+                    <li class="nav"><a href={{ path('app_tech_change') }}>Edit password</a></li>
+                    <li class="nav"><a href={{ path('app_tech_import') }}>Import CSV</a></li>
+                {% elseif is_granted('ROLE_STORE') %}
+                    <li class="nav"><a href={{ path('app_chart_chart') }}>Charts</a></li>
                 {% endif %}
-                <li class="nav" style="float: right">{% if app.user %}<a href="{{ path('app_logout') }}">
-                        Logout</a> {% else %} <a href="{{ path('app_login') }}">Login</a> {% endif %}</li>
+                <li class="nav" style="float: right">
+                    {% if app.user %}
+                        <a href="{{ path('app_logout') }}">Logout</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}">Login</a>
+                    {% endif %}
+                </li>
             </ul>
         </nav>
     {% endblock %}
 </header>
 <main>{% block body %}{% endblock %}</main>
 <footer>{% block footer %}{% endblock %}</footer>
+{% block js %}{% endblock %}
 </body>
 </html>

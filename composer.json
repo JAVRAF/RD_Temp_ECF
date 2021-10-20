@@ -25,7 +25,9 @@
         "symfony/validator": "5.3.*",
         "symfony/yaml": "5.3.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "ext-mysqli": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.34",

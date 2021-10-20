@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Tech;
+use App\Form\TechEditType;
 use App\Form\TechType;
 use App\Repository\TechRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -105,5 +106,89 @@ class TechController extends AbstractController
         } catch (Exception $e) {
             return new Response ($e->getMessage());
         }
+    }
+
+    /**
+     * @Route("/changepassword")
+     */
+    public function change(TechRepository $techRepository, Request $request): Response
+    {
+        $user = $this->getUser()->getid();
+        $isedited = false;
+        $tech = $techRepository->find($user);
+
+        try {
+            if (!$tech) {
+                throw new Exception('<h2>This tech does not exist</h2>');
+            }
+            $form = $this->createForm(TechEditType::class, $tech);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($tech);
+                $entityManager->flush();
+                $isedited = true;
+            }
+
+            return $this->render('tech/edit.html.twig', [
+                'tech' => $tech,
+                'form' => $form->createView(),
+                'isedited' => $isedited
+            ]);
+        } catch (Exception $e) {
+            return new Response ($e->getMessage());
+        }
+    }
+
+    /**
+     * @Route("/import")
+     */
+    public function import(): Response
+    {
+        $isuploaded = false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_FILES["text"]) && $_FILES["text"]["error"] == 0) {
+                $allowed = array("csv" => "application/vnd.ms-excel");
+                $filename = $_FILES["text"]["name"];
+                $filetype = $_FILES["text"]["type"];
+                $filesize = $_FILES["text"]["size"];
+
+                $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                if (!array_key_exists($ext, $allowed)) die("Error : wrong format.");
+
+                $maxsize = 10 * 1024 * 1024;
+                if ($filesize > $maxsize) die("Error: file size exceeded.");
+
+                if (in_array($filetype, $allowed)) {
+
+                    if (file_exists("C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename)) {
+                        $isuploaded = "error: " . $filename . " already exists.";
+                    } else {
+                        move_uploaded_file($_FILES["text"]["tmp_name"], "C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename);
+
+                        $con = mysqli_connect('127.0.0.1:3306', 'root', '', 'rdtemp_db');
+                        if (!$con) {
+                            die('Could not connect: ' . mysqli_error($con));
+                        } else {
+                            mysqli_select_db($con, "rdtemp_db");
+
+                            $sql = "LOAD DATA INFILE 'C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
+
+                            mysqli_query($con, $sql);
+
+                            $isuploaded = 'Upload successful !';
+                        }
+                    }
+                } else {
+                    $isuploaded = 'error : ' . $filename . ' is not a CSV file.';
+                }
+            } else {
+                $isuploaded = 'Error : File was not uploaded to the server correctly';
+            }
+        }
+        return $this->render('tech/import.html.twig', [
+            'isuploaded' => $isuploaded
+        ]);
     }
 }

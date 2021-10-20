@@ -24,8 +24,7 @@
             <input class="button" type="submit" value="Submit"/>
             {{ form_end(form) }}
         {% else %}
-            <h1>The tech {{ admin.username }} has been created ! ✅</h1>
-            <button onclick="window.location.href = '{{ path('app_admin_add') }}'">Add a new tech</button>
+            <h1>The admin {{ admin.username }} has been created ! ✅</h1>
             <button onclick="window.location.href = '{{ path('app_home_index') }}'">Back to Home</button>
         {% endif %}
     </div>

@@ -13,8 +13,14 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'Bienvenue sur l\'app RD TEmp'
-        ]);
+        if ($this->getUser()) {
+            $name = $this->getUser()->getUserIdentifier();
+
+            return $this->render('home/index.html.twig', [
+                'username' => $name,
+            ]);
+        }
+
+        return $this->render('home/index.html.twig');
     }
 }

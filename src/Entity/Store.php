@@ -6,7 +6,7 @@ use App\Repository\StoreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -50,6 +50,7 @@ class Store implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(pattern="/^0[0-9]{9}$/", message="invalid phone number")
      */
     private $phone_number;
 
@@ -78,7 +79,7 @@ class Store implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setUsername(): self
     {
-        $city = strtolower($this->getCity());
+        $city = strtolower(str_replace(' ','-',substr($this->getCity(), 0, 3)));
         $this->username = 'OFF_'.$city.'_'.$this->id;
 
         return $this;

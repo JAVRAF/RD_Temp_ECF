@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\HygrodataRepository;
+use App\Repository\ProbeDataRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=HygrodataRepository::class)
+ * @ORM\Entity(repositoryClass=ProbeDataRepository::class)
  */
-class Hygrodata
+class ProbeData
 {
     /**
      * @ORM\Id
@@ -18,7 +18,7 @@ class Hygrodata
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $probe;
 
@@ -28,7 +28,7 @@ class Hygrodata
     private $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private $value;
 
@@ -42,7 +42,7 @@ class Hygrodata
         return $this->probe;
     }
 
-    public function setProbe(?string $probe): self
+    public function setProbe(string $probe): self
     {
         $this->probe = $probe;
 
@@ -61,12 +61,12 @@ class Hygrodata
         return $this;
     }
 
-    public function getValue(): ?int
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    public function setValue(int $value): self
+    public function setValue(string $value): self
     {
         $this->value = $value;
 

@@ -54,6 +54,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/store, roles: ROLE_ADMIN }
+         - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/chamber, roles: ROLE_ADMIN }
-         - { path: ^/tech/, roles: ROLE_ADMIN }
-#         - { path: /techedit/, roles: ROLE_TECH }
+         - { path: ^/tech, roles: ROLE_ADMIN }
+         - { path: ^/changepassword, roles: ROLE_TECH }
+         - { path: ^/import, roles: ROLE_TECH }
+         - { path: ^/chart, roles: ROLE_STORE }

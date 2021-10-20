@@ -8,10 +8,18 @@
             {{ form_widget(form) }}
             <input class="button" type="submit" value="edit tech"/>
             {{ form_end(form) }}
-            <button onclick="window.location.href = '{{ path('app_tech_list') }}'">Back to tech list</button>
+            {% if is_granted('ROLE_ADMIN') %}
+                <button onclick="window.location.href = '{{ path('app_tech_list') }}'">Back to tech list</button>
+            {% elseif is_granted('ROLE_TECH') %}
+                <button onclick="window.location.href = '{{ path('app_home_index') }}'">Back to Home</button>
+            {% endif %}
         {% else %}
             <h1>The tech {{ tech.username }} has been edited! ✅</h1>
-            <button onclick="window.location.href = '{{ path('app_tech_list') }}'">Back to tech list</button>
+            {% if is_granted('ROLE_ADMIN') %}
+                <button onclick="window.location.href = '{{ path('app_tech_list') }}'">Back to tech list</button>
+            {% elseif is_granted('ROLE_TECH') %}
+                <button onclick="window.location.href = '{{ path('app_home_index') }}'">Back to Home</button>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}
