@@ -178,7 +178,7 @@ class TechController extends AbstractController
                             mysqli_query($con, $sql);
 
                             $isuploaded = 'Upload successful !';
-                            $test = (realpath("../"));
+                            $test = (realpath("../app"));
                             dump($test);
                         }
                     }
