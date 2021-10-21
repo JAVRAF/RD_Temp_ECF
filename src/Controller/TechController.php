@@ -171,7 +171,7 @@ class TechController extends AbstractController
                         if (!$con) {
                             die('Could not connect: ' . mysqli_error($con));
                         } else {
-                            mysqli_select_db($con, "rdtemp_db");
+                            mysqli_select_db($con, "j8knpia3omrkra47");
 
                             $sql = "LOAD DATA INFILE '".$_FILES["text"]["tmp_name"]."' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
 
