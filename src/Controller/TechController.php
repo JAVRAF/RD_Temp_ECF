@@ -162,10 +162,10 @@ class TechController extends AbstractController
 
                 if (in_array($filetype, $allowed)) {
 
-                    if (file_exists("rd-temp/public/csv/" . $filename)) {
+                    if (file_exists($_FILES["text"]["tmp_name"] . $filename)) {
                         $isuploaded = "error: " . $filename . " already exists.";
                     } else {
-                        move_uploaded_file($_FILES["text"]["tmp_name"], "rd-temp/public/csv/" . $filename);
+//                        move_uploaded_file($_FILES["text"]["tmp_name"], "rd-temp/public/csv/" . $filename);
 
                         $con = mysqli_connect('127.0.0.1:3306', 'root', '', 'rdtemp_db');
                         if (!$con) {
@@ -173,7 +173,7 @@ class TechController extends AbstractController
                         } else {
                             mysqli_select_db($con, "rdtemp_db");
 
-                            $sql = "LOAD DATA INFILE 'rd-temp/public/csv/" . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
+                            $sql = "LOAD DATA INFILE '".$_FILES["text"]["tmp_name"] . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
 
                             mysqli_query($con, $sql);
 
