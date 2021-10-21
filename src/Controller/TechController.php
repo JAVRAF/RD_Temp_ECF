@@ -167,7 +167,7 @@ class TechController extends AbstractController
                     } else {
 //                        move_uploaded_file($_FILES["text"]["tmp_name"], "rd-temp/public/csv/" . $filename);
 
-                        $con = mysqli_connect('127.0.0.1:3306', 'root', '', 'rdtemp_db');
+                        $con = mysqli_connect('c8u4r7fp8i8qaniw.chr7pe7iynqr.eu-west-1.rds.amazonaws.com', 'kr3x31eyuu2mj853', 'putibko55spih8zd', 'j8knpia3omrkra47');
                         if (!$con) {
                             die('Could not connect: ' . mysqli_error($con));
                         } else {
