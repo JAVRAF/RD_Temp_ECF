@@ -162,18 +162,20 @@ class TechController extends AbstractController
 
                 if (in_array($filetype, $allowed)) {
 
-                    if (file_exists("C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename)) {
+                    if (file_exists($_FILES["text"]["tmp_name"] . $filename)) {
                         $isuploaded = "error: " . $filename . " already exists.";
                     } else {
-                        move_uploaded_file($_FILES["text"]["tmp_name"], "C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename);
+
+                        move_uploaded_file($_FILES["text"]["tmp_name"], "C:/xampp/apps/RD_Temp_ECF/public/csv/" . $filename);
 
                         $con = mysqli_connect('127.0.0.1:3306', 'root', '', 'rdtemp_db');
+
                         if (!$con) {
                             die('Could not connect: ' . mysqli_error($con));
                         } else {
-                            mysqli_select_db($con, "rdtemp_db");
+                            mysqli_select_db($con, "redtemp_db");
 
-                            $sql = "LOAD DATA INFILE 'C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
+                            $sql = "LOAD DATA INFILE 'C:/xampp/apps/RD_Temp_ECF/public/csv/" . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
 
                             mysqli_query($con, $sql);
 
