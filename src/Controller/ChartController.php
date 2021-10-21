@@ -51,7 +51,7 @@ class ChartController extends AbstractController
             }
             mysqli_close($con);
 
-            return $this->render('chart/chart.html.twig', [
+            return $this->render('chart/ajax.html.twig', [
                 'chambers' => $chambers,
                 'tempdata' => $tempdata,
                 'hygrodata' => $hygrodata,

@@ -1,101 +1,105 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
+<style>
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
 
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
-    {% if ajax == false %}
-        <h1>Temp and hygro Charts for :</h1>
-        <form>
-            <select name="probe">
-                <option value="">Select a chamber</option>
-                {% for chamber in chambers %}
-                    <option value="{{ chamber.tempprobe }},{{ chamber.hygroprobe }}">{{ chamber.name }}</option>
-                {% endfor %}
-            </select>
-            <label for="date">date:</label>
-            <input type="date" id="date" name="date">
-            <input type="button" class="button" onclick="showchart(date.value, probe.value)" value="Submit">
-            <input type="button" class="button" onclick="validate()" value="confirm day's data">
-        </form>
-        <div id="checked"></div>
-        <br>
-        <div id="txtHint"><b>Probes values will be listed here...</b></div>
-        <div class="example-wrapper">
-            <div>
-                <canvas id="TempChart"></canvas>
-            </div>
-            <div>
-                <canvas id="HygroChart"></canvas>
-            </div>
-        </div>
-    {% else %}
-        {% block header %} {% endblock %}
-        <div>
-            <h2>temp values:</h2>
-            {% for v in tempdata %}
-                <p>{{ v.2 }} : {{ v.3 }}</p>
-            {% endfor %}
-        </div>
-        <div>
-            <h2>hygro values:</h2>
-            {% for v in hygrodata %}
-                <p>{{ v.2 }} : {{ v.3 }}</p>
-            {% endfor %}
-        </div>
+    .example-wrapper code {
+        background: #F5F5F5;
+        padding: 2px 6px;
+    }
+</style>
+{% if ajax == false %}
+<h1>Temp and hygro Charts for :</h1>
+<form>
+    <select name="probe">
+        <option value="">Select a chamber</option>
+        {% for chamber in chambers %}
+            <option value="{{ chamber.tempprobe }},{{ chamber.hygroprobe }}">{{ chamber.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="date">date:</label>
+    <input type="date" id="date" name="date">
+    <input type="button" class="button" onclick="showchart(date.value, probe.value)" value="Submit">
+    <input type="button" class="button" onclick="validate()" value="confirm day's data">
+</form>
+<div id="checked"></div>
+<br>
+<div id="txtHint"><b>Probes values will be listed here...</b></div>
+<div class="example-wrapper">
+    <div>
+        <canvas id="TempChart"></canvas>
+    </div>
+    <div>
+        <canvas id="HygroChart"></canvas>
+    </div>
+</div>
+
+</div>
+{% else %}
+
+<div>
+    <h2>temp values:</h2>
+    {% for v in tempdata %}
+        <p>{{ v.2 }} : {{ v.3 }}</p>
+    {% endfor %}
+</div>
+<div>
+    <h2>hygro values:</h2>
+    {% for v in hygrodata %}
+        <p>{{ v.2 }} : {{ v.3 }}</p>
+    {% endfor %}
     {% endif %}
-{% endblock %}
-{% block js %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('JS/setup.js') }}"></script>
-    <script src="{{ asset('JS/config.js') }}"></script>
-    <script>
-
-        function showchart(date, probe) {
-            if (date == "" || probe == "") {
-                document.getElementById("txtHint").innerHTML = "<h2>Select both a probe and a date</h2>";
-            } else {
-                let xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("txtHint").innerHTML = this.responseText;
-                    }
-                };
-                xmlhttp.open("GET", "chart?date=" + date + "&probe=" + probe, true);
-                xmlhttp.send();
+    {% endblock %}
+    {% block js %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ asset('JS/setup.js') }}"></script>
+        <script src="{{ asset('JS/config.js') }}"></script>
+        <script type="text/javascript">
+            function showchart(date, probe) {
+                if (date == "" || probe == "") {
+                    document.getElementById("txtHint").innerHTML = "<h2>Select both a probe and a date</h2>";
+                } else {
+                    let xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("txtHint").innerHTML = this.responseText;
+                        }
+                    };
+                    xmlhttp.open("GET", "chart?date=" + date + "&probe=" + probe, true);
+                    xmlhttp.send();
+                }
             }
-        }
 
-        let TempChart = new Chart(
-            document.getElementById('TempChart'),
-            TempConfig);
-
-        let HygroChart = new Chart(
-            document.getElementById('HygroChart'),
-            HygroConfig);
-
-        let isvalidated = false;
-
-        function validate() {
-            if (isvalidated === false) {
-                isvalidated = true
-                window.alert('Day checked !')
-                document.getElementById("checked").innerHTML = '<h2>This day has been verified ! ✅</h2>';
-            } else {
-                isvalidated = false
-                window.alert('Day not checked !')
-                document.getElementById("checked").innerHTML = '';
+            function validate() {
+                if (isvalidated === false) {
+                    isvalidated = true
+                    window.alert('Day checked !')
+                    document.getElementById("checked").innerHTML = '<h2>This day has been verified ! ✅</h2>';
+                } else {
+                    isvalidated = false
+                    window.alert('Day not checked !')
+                    document.getElementById("checked").innerHTML = '';
+                }
             }
-        }
-    </script>
-{% endblock %}
+            let test = '{{ 'datavalue'|trans({}, 'general') }}'
+
+
+            let TempChart = new Chart(
+                document.getElementById('TempChart'),
+                TempConfig);
+
+            let HygroChart = new Chart(
+                document.getElementById('HygroChart'),
+                HygroConfig);
+
+            let isvalidated = false;
+
+            alert(test)
+
+        </script>
+    {% endblock %}
