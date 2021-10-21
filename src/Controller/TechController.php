@@ -162,22 +162,24 @@ class TechController extends AbstractController
 
                 if (in_array($filetype, $allowed)) {
 
-                    if (file_exists($_FILES["text"]["tmp_name"] . $filename)) {
+                    if (file_exists($_FILES["text"]["tmp_name"]  . $filename)) {
                         $isuploaded = "error: " . $filename . " already exists.";
                     } else {
-//                        move_uploaded_file($_FILES["text"]["tmp_name"], "rd-temp/public/csv/" . $filename);
+//                        move_uploaded_file($_FILES["text"]["tmp_name"], "C:/xampp/apps/RD_temp_ECF/public/csv/" . $filename);
 
+//                        $con = mysqli_connect('127.0.0.1:3306', 'root', '', 'rdtemp_db');
                         $con = mysqli_connect('c8u4r7fp8i8qaniw.chr7pe7iynqr.eu-west-1.rds.amazonaws.com', 'kr3x31eyuu2mj853', 'putibko55spih8zd', 'j8knpia3omrkra47');
+
                         if (!$con) {
                             die('Could not connect: ' . mysqli_error($con));
                         } else {
-                            mysqli_select_db($con, "rdtemp_db");
+                            mysqli_select_db($con, "j8knpia3omrkra47");
 
-                            $sql = "LOAD DATA INFILE '".$_FILES["text"]["tmp_name"] . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
+                            $sql = "LOAD DATA INFILE '". $_FILES["text"]["tmp_name"] . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
 
                             mysqli_query($con, $sql);
 
-                            $isuploaded = 'Upload successful !';
+                            $isuploaded = 'Upload successful !'.$_FILES["text"]["tmp_name"];
                         }
                     }
                 } else {
