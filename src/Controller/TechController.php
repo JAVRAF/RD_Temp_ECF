@@ -162,7 +162,7 @@ class TechController extends AbstractController
 
                 if (in_array($filetype, $allowed)) {
 
-                    if (file_exists($_FILES["text"]["tmp_name"]  . $filename)) {
+                    if (file_exists($_FILES["text"]["tmp_name"])) {
                         $isuploaded = "error: " . $filename . " already exists.";
                     } else {
 //                        move_uploaded_file($_FILES["text"]["tmp_name"], "/app/RD_temp_ECF/public/csv/" . $filename);
@@ -175,11 +175,11 @@ class TechController extends AbstractController
                         } else {
                             mysqli_select_db($con, "redtemp_db");
 
-                            $sql = "LOAD DATA INFILE '". $_FILES["text"]["tmp_name"] . $filename . "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
+                            $sql = "LOAD DATA INFILE '". $_FILES["text"]["tmp_name"]. "' INTO TABLE probe_data FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
 
                             mysqli_query($con, $sql);
 
-                            $isuploaded = 'Upload successful !'.$_FILES["text"]["tmp_name"].$filename;
+                            $isuploaded = 'Upload successful !'.$_FILES["text"]["tmp_name"];
                         }
                     }
                 } else {
