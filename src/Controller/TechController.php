@@ -180,6 +180,7 @@ class TechController extends AbstractController
                             mysqli_query($con, $sql);
 
                             $isuploaded = 'Upload successful !';
+                            $test = realpath($_FILES["text"]["tmp_name"]);
                         }
                     }
                 } else {
