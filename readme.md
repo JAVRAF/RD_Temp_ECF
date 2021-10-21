@@ -6,16 +6,13 @@
 
 1. Télécharger XAMPP [ici](https://www.apachefriends.org/download.html)
 
-2. Installer XAMPP en s'aidant de la [documentation](https://www.apachefriends.org/faq_windows.html)
+2. Installer XAMPP à la racine de C: en s'aidant de la [documentation](https://www.apachefriends.org/faq_windows.html)
 
 ### Rapatriement du projet
-1. créer un projet symfony en entrant la commande suivante dans un terminal :
-    - `composer create-project symfony/skeleton my_project_name`
-2. Initialiser un nouveau git en entrant la commande suivante dans un terminal :
-    - `git init`
-3. cloner le projet avec la commande
+1. créer un dossier "apps" dans C:/xampp
+2. Ouvrir un terminal depuis C:/xampp/apps et cloner le projet avec la commande
     - `git clone https://github.com/JAVRAF/RD_Temp_ECF.git`
-4. Installer les dépendances en entrant la commande suivante dans un terminal :
+3. Installer les dépendances en entrant la commande suivante dans un terminal :
     - `composer install`
 ### Création de la base de données
 4. Creer un nouveau fichier .env.local en copiant/collant le fichier .env à la racine du projet puis
