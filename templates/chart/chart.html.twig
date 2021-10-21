@@ -14,31 +14,46 @@
             padding: 2px 6px;
         }
     </style>
-    <h1>Temp and hygro Charts for :</h1>
-    <form>
-        <select name="probe">
-            <option value="">Select a chamber</option>
-            {% for chamber in chambers %}
-                <option value="{{ chamber.tempprobe }},{{ chamber.hygroprobe }}">{{ chamber.name }}</option>
+    {% if ajax == false %}
+        <h1>Temp and hygro Charts for :</h1>
+        <form>
+            <select name="probe">
+                <option value="">Select a chamber</option>
+                {% for chamber in chambers %}
+                    <option value="{{ chamber.tempprobe }},{{ chamber.hygroprobe }}">{{ chamber.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="date">date:</label>
+            <input type="date" id="date" name="date">
+            <input type="button" class="button" onclick="showchart(date.value, probe.value)" value="Submit">
+            <input type="button" class="button" onclick="validate()" value="confirm day's data">
+        </form>
+        <div id="checked"></div>
+        <br>
+        <div id="txtHint"><b>Probes values will be listed here...</b></div>
+        <div class="example-wrapper">
+            <div>
+                <canvas id="TempChart"></canvas>
+            </div>
+            <div>
+                <canvas id="HygroChart"></canvas>
+            </div>
+        </div>
+    {% else %}
+        {% block header %} {% endblock %}
+        <div>
+            <h2>temp values:</h2>
+            {% for v in tempdata %}
+                <p>{{ v.2 }} : {{ v.3 }}</p>
             {% endfor %}
-        </select>
-        <label for="date">date:</label>
-        <input type="date" id="date" name="date">
-        <input type="button" class="button" onclick="showchart(date.value, probe.value)" value="Submit">
-        <input type="button" class="button" onclick="validate()" value="confirm day's data">
-    </form>
-    <div id="checked"></div>
-    <br>
-    <div id="txtHint"><b>Probes values will be listed here...</b></div>
-    <div class="example-wrapper">
-        <div>
-            <canvas id="TempChart"></canvas>
         </div>
         <div>
-            <canvas id="HygroChart"></canvas>
+            <h2>hygro values:</h2>
+            {% for v in hygrodata %}
+                <p>{{ v.2 }} : {{ v.3 }}</p>
+            {% endfor %}
         </div>
-    </div>
-
+    {% endif %}
 {% endblock %}
 {% block js %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -56,10 +71,11 @@
                         document.getElementById("txtHint").innerHTML = this.responseText;
                     }
                 };
-                xmlhttp.open("GET", "displaychart?date=" + date + "&probe=" + probe, true);
+                xmlhttp.open("GET", "chart?date=" + date + "&probe=" + probe, true);
                 xmlhttp.send();
             }
         }
+
         let TempChart = new Chart(
             document.getElementById('TempChart'),
             TempConfig);
@@ -69,6 +85,7 @@
             HygroConfig);
 
         let isvalidated = false;
+
         function validate() {
             if (isvalidated === false) {
                 isvalidated = true
